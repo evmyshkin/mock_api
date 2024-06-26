@@ -57,7 +57,7 @@ const generatorHandler = (app) => {
 
         const res =
         {
-            "info": "Новые переменные AdFox и Креатива сгенерированы. Они привяжутся к Заявке по полю kvant_adv_campaign_source_id",
+            "info": "Новые переменные AdFox и Креатива сгенерированы. Они привяжутся к Заявке по kvant_adv_campaign_source_id",
             "newVariables": ["kvant_adv_campaign_adfox_source_id", "kvant_line_number", "kvant_adfox_id", "kvant_creative_source_id", "kvant_creative_mt_name"]
         };
         response.send(res);
@@ -69,12 +69,10 @@ const generatorHandler = (app) => {
 
         const res =
         {
-            "info": "Новые переменные Variables_Response_Mock для Статистики и Площадок заданы. Они привяжутся к Керативу по creative_erir_token",
+            "info": "Новые переменные для Статистики и Площадок заданы. Они привяжутся к Креативу по creative_erir_token",
             "newVariables": ["gpmd_stat_source_id", "gpmd_stat_old_source_id", "gpmd_pad_random_id", "gpmd_pad_source_id", "gpmd_pad_referer_source_id", "gpmd_pad_site_name","gpmd_site_url","gpmd_pad_url","sma_adfox_site_id"]
         };
         response.send(res);
-
-        //pm.environment.set('sma_adfox_site_id', uuid.v4().toUpperCase());
     });
 }
 
