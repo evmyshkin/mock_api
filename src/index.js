@@ -9,8 +9,9 @@ app.use(express.json());
 // Открываем порт
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log("Server Listening on PORT:", PORT);
+    console.log("✅ Server Listening on PORT:", PORT);
 });
 
 requestHandler(app);
 generatorHandler(app);
+console.log("✅ Handlers Launched")
