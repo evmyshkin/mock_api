@@ -69,7 +69,7 @@ const generatorHandler = (app) => {
 
         const res =
         {
-            "info": "Новые переменные для Статистики и Площадок заданы. Они привяжутся к Креативу по creative_erir_token",
+            "info": "Новые переменные для Статистики и Площадки заданы. Они привяжутся к Креативу по creative_erir_token",
             "newVariables": ["gpmd_stat_source_id", "gpmd_stat_old_source_id", "gpmd_pad_random_id", "gpmd_pad_source_id", "gpmd_pad_referer_source_id", "gpmd_pad_site_name","gpmd_site_url","gpmd_pad_url","sma_adfox_site_id"]
         };
         response.send(res);
