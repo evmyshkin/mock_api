@@ -3,25 +3,25 @@ const entityPaths = [
         // Квант Заявка
         receiverPath: "/receiver/v0.1/mt_request/updated",
         mockPath: "/v0.1/mt_request/updated",
-        confirmPath: "/v0.1/mt_request/confirmed"
+        confirmPath: "/v0.1/mt_request/event/confirmed"
     },
     {
         // Квант Строка Заявки AdFox
         receiverPath: "/receiver/v0.1/mt_requestdetail/updated",
         mockPath: "/v0.1/mt_requestdetail/updated",
-        confirmPath: "/v0.1/mt_requestdetail/confirmed",
+        confirmPath: "/v0.1/mt_requestdetail/event/confirmed",
     },
     {
         // Квант Рекламный Материал
         receiverPath: "/receiver/v0.1/mt_advertmaterial/updated",
         mockPath: "/v0.1/mt_advertmaterial/updated",
-        confirmPath: "/v0.1/mt_advertmaterial/confirmed"
+        confirmPath: "/v0.1/mt_advertmaterial/event/confirmed"
     },
     {
         // Квант Изначальный Договор
         receiverPath: "/receiver/v0.1/mt_originalcontract/updated",
         mockPath: "/v0.1/mt_originalcontract/updated",
-        confirmPath: "/v0.1/mt_originalcontract/confirmed"
+        confirmPath: "/v0.1/mt_originalcontract/event/confirmed"
     },
     {
         // СМА Рекламная Кампания
