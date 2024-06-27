@@ -26,6 +26,9 @@ const requestHandler = (app) => {
 
         // Очистить текущий ответ заглушки (Конфирм)
         app.post(confirmPath, (request, response) => {
+
+            responseSets[receiverPath] = [];
+
             const res = {
                 info: "Ответ заглушки очищен",
                 mockResponse: responseSets[receiverPath]
@@ -63,14 +66,14 @@ const generatorHandler = (app) => {
         response.send(res);
     });
 
-    
+
     // Сгенерировать Статистику и Площадку
     app.post("/generate/statAndPad", (request, response) => {
 
         const res =
         {
             "info": "Новые переменные для Статистики и Площадки заданы. Они привяжутся к Креативу по creative_erir_token",
-            "newVariables": ["gpmd_stat_source_id", "gpmd_stat_old_source_id", "gpmd_pad_random_id", "gpmd_pad_source_id", "gpmd_pad_referer_source_id", "gpmd_pad_site_name","gpmd_site_url","gpmd_pad_url","sma_adfox_site_id"]
+            "newVariables": ["gpmd_stat_source_id", "gpmd_stat_old_source_id", "gpmd_pad_random_id", "gpmd_pad_source_id", "gpmd_pad_referer_source_id", "gpmd_pad_site_name", "gpmd_site_url", "gpmd_pad_url", "sma_adfox_site_id"]
         };
         response.send(res);
     });
