@@ -29,10 +29,6 @@ const requestHandler = (app) => {
 
             responseSets[receiverPath] = [];
 
-            // const res = {
-            //     info: "Ответ заглушки очищен",
-            //     mockResponse: responseSets[receiverPath]
-            // };
             response.send();
         });
     };
