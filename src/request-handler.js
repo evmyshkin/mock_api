@@ -43,6 +43,17 @@ const requestHandler = (app) => {
     });
 };
 
+// Хелс-чек
+const healthCheckHandler = (app) => {
+           app.get("/healthcheck", (request, response) => {
+            const res = {
+                info: "Сервис работает"
+            };
+            response.send(res);
+        });
+
+}
+
 const generatorHandler = (app) => {
 
     // Сгенерировать все переменные
@@ -82,5 +93,6 @@ const generatorHandler = (app) => {
 
 module.exports = {
     requestHandler,
-    generatorHandler
+    generatorHandler,
+    healthCheckHandler
 };

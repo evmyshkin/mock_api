@@ -1,7 +1,7 @@
 const express = require(`express`);
 require(`dotenv`).config();
 
-const { requestHandler, generatorHandler } = require("./request-handler");
+const { requestHandler, generatorHandler, healthCheckHandler } = require("./request-handler");
 
 const app = express();
 app.use(express.json());
@@ -14,4 +14,5 @@ app.listen(PORT, () => {
 
 requestHandler(app);
 generatorHandler(app);
+healthCheckHandler(app);
 console.log("✅ Handlers Launched")
