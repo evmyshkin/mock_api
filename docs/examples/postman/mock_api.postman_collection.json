@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "mock_api quickstart",
+    "description": "Minimal collection for storefront, order-processing and product-upload flows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "orderRequestId",
+      "value": ""
+    },
+    {
+      "key": "uploadRequestId",
+      "value": "req-001"
+    }
+  ],
+  "item": [
+    {
+      "name": "Healthcheck",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/healthcheck",
+          "host": ["{{baseUrl}}"],
+          "path": ["healthcheck"]
+        }
+      }
+    },
+    {
+      "name": "Storefront set products",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"product_id\": \"product-1\",\n    \"sku\": \"sku-1\",\n    \"name\": \"Demo Product\",\n    \"category\": \"electronics\",\n    \"price\": 10.5,\n    \"currency\": \"USD\",\n    \"quantity\": 5\n  }\n]"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/products/set",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "products", "set"]
+        }
+      }
+    },
+    {
+      "name": "Storefront get products",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "products"]
+        }
+      }
+    },
+    {
+      "name": "Order processing submit",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const body = pm.response.json();",
+              "if (body.request_id) {",
+              "  pm.collectionVariables.set('orderRequestId', body.request_id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"order_id\": \"order-1001\",\n  \"customer_id\": \"customer-42\",\n  \"items\": [\n    {\n      \"sku\": \"sku-1\",\n      \"quantity\": 1,\n      \"unit_price\": 10.5\n    }\n  ],\n  \"total_amount\": 10.5,\n  \"currency\": \"USD\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/order-processing/submit",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "order-processing", "submit"]
+        }
+      }
+    },
+    {
+      "name": "Order processing status",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/order-processing/status?request_id={{orderRequestId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "order-processing", "status"],
+          "query": [
+            {
+              "key": "request_id",
+              "value": "{{orderRequestId}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Product upload capture",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "request_id",
+            "value": "{{uploadRequestId}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"file_url\": \"https://example.test/products.xlsx\",\n  \"uploaded_by\": \"postman\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/product-upload",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "product-upload"]
+        }
+      }
+    },
+    {
+      "name": "Product upload get by request_id",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/product-upload/records/{{uploadRequestId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "product-upload", "records", "{{uploadRequestId}}"]
+        }
+      }
+    }
+  ]
+}

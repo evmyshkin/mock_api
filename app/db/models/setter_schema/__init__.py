@@ -1,0 +1,2 @@
+from app.db.models.setter_schema.setter_request_model import SetterRequestModel as SetterRequestModel
+from app.db.models.setter_schema.setter_settings_model import SetterSettingsModel as SetterSettingsModel

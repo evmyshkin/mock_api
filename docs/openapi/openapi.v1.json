@@ -1,0 +1,1960 @@
+{
+  "components": {
+    "schemas": {
+      "BaseSettingsUpdateRequestSchema": {
+        "properties": {
+          "id": {
+            "description": "Идентификатор записи настройки.",
+            "examples": [
+              "1"
+            ],
+            "minimum": 1.0,
+            "title": "Id",
+            "type": "integer"
+          },
+          "response_code": {
+            "default": 200,
+            "description": "HTTP-код ответа.",
+            "examples": [
+              "200"
+            ],
+            "maximum": 599.0,
+            "minimum": 100.0,
+            "title": "Response Code",
+            "type": "integer"
+          },
+          "response_delay": {
+            "default": 0,
+            "description": "Задержка ответа в секундах.",
+            "examples": [
+              "0"
+            ],
+            "minimum": 0.0,
+            "title": "Response Delay",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "BaseSettingsUpdateRequestSchema",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "InfoResponseSchema": {
+        "properties": {
+          "context": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Дополнительная информация о выполнении запроса.",
+            "title": "Context"
+          },
+          "info": {
+            "description": "Информация о запросе.",
+            "title": "Info",
+            "type": "string"
+          }
+        },
+        "required": [
+          "info"
+        ],
+        "title": "InfoResponseSchema",
+        "type": "object"
+      },
+      "OrderLineItemSchema": {
+        "additionalProperties": false,
+        "description": "Позиция в теле отправки заказа.",
+        "properties": {
+          "quantity": {
+            "description": "Заказанное количество.",
+            "minimum": 1.0,
+            "title": "Quantity",
+            "type": "integer"
+          },
+          "sku": {
+            "description": "Идентификатор SKU.",
+            "minLength": 1,
+            "title": "Sku",
+            "type": "string"
+          },
+          "unit_price": {
+            "description": "Цена за единицу SKU.",
+            "minimum": 0.0,
+            "title": "Unit Price",
+            "type": "number"
+          }
+        },
+        "required": [
+          "sku",
+          "quantity",
+          "unit_price"
+        ],
+        "title": "OrderLineItemSchema",
+        "type": "object"
+      },
+      "ProcessorEndpointTypesEnum": {
+        "description": "Типы endpoint settings для processor API.",
+        "enum": [
+          "submit",
+          "status"
+        ],
+        "title": "ProcessorEndpointTypesEnum",
+        "type": "string"
+      },
+      "ProcessorPostErrorDetailSchema": {
+        "description": "Коллекция ошибок валидации мгновенной отправки.",
+        "properties": {
+          "detail": {
+            "description": "Список ошибок с путями и сообщениями.",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorPostErrorLocationSchema"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "required": [
+          "detail"
+        ],
+        "title": "ProcessorPostErrorDetailSchema",
+        "type": "object"
+      },
+      "ProcessorPostErrorLocationSchema": {
+        "description": "Описание одной ошибки в теле мгновенной ошибки отправки.",
+        "properties": {
+          "loc": {
+            "description": "Путь до поля с ошибкой.",
+            "examples": [
+              [
+                "body",
+                "order_id"
+              ]
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Loc",
+            "type": "array"
+          },
+          "msg": {
+            "description": "Текст ошибки валидации.",
+            "examples": [
+              "Эмулированная ошибка валидации отправки"
+            ],
+            "title": "Msg",
+            "type": "string"
+          },
+          "type": {
+            "description": "Код ошибки.",
+            "examples": [
+              "value_error.processor.mock_error_response"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ProcessorPostErrorLocationSchema",
+        "type": "object"
+      },
+      "ProcessorPostModesResponseSchema": {
+        "description": "Описание POST-режима для эндпоинта отправки.",
+        "properties": {
+          "error_message": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProcessorPostValidationErrorSchema"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Опциональное тело мгновенного ответа 422."
+          },
+          "id": {
+            "description": "Идентификатор POST-режима.",
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название POST-режима.",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "error_message"
+        ],
+        "title": "ProcessorPostModesResponseSchema",
+        "type": "object"
+      },
+      "ProcessorPostValidationErrorSchema": {
+        "description": "Схема тела для мгновенного ответа 422.",
+        "properties": {
+          "validationError": {
+            "$ref": "#/components/schemas/ProcessorPostErrorDetailSchema",
+            "description": "Детали валидации."
+          }
+        },
+        "required": [
+          "validationError"
+        ],
+        "title": "ProcessorPostValidationErrorSchema",
+        "type": "object"
+      },
+      "ProcessorRequestResponseSchema": {
+        "description": "Схема сохраненной записи запроса обработки заказа.",
+        "properties": {
+          "created": {
+            "description": "Время создания записи.",
+            "format": "date-time",
+            "title": "Created",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Идентификатор клиента.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "endpoint_type": {
+            "description": "Тип endpoint, где была создана запись.",
+            "title": "Endpoint Type",
+            "type": "string"
+          },
+          "id": {
+            "description": "Идентификатор записи.",
+            "minimum": 1.0,
+            "title": "Id",
+            "type": "integer"
+          },
+          "order_id": {
+            "description": "Идентификатор заказа.",
+            "title": "Order Id",
+            "type": "string"
+          },
+          "payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              }
+            ],
+            "description": "Сохраненное тело исходного запроса.",
+            "title": "Payload"
+          },
+          "post_mode_id": {
+            "description": "Идентификатор post mode.",
+            "title": "Post Mode Id",
+            "type": "integer"
+          },
+          "request_id": {
+            "description": "Уникальный идентификатор запроса.",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "response_code": {
+            "description": "HTTP-код ответа.",
+            "title": "Response Code",
+            "type": "integer"
+          },
+          "response_delay": {
+            "description": "Задержка ответа в секундах.",
+            "title": "Response Delay",
+            "type": "integer"
+          },
+          "status_change_after": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Время планового перехода статуса.",
+            "title": "Status Change After"
+          },
+          "status_mode_id": {
+            "description": "Идентификатор status mode.",
+            "title": "Status Mode Id",
+            "type": "integer"
+          },
+          "status_step_id": {
+            "description": "Идентификатор текущего шага статуса.",
+            "title": "Status Step Id",
+            "type": "integer"
+          },
+          "unixtimestamp": {
+            "description": "Unix-время регистрации запроса.",
+            "title": "Unixtimestamp",
+            "type": "integer"
+          },
+          "updated": {
+            "description": "Время обновления записи.",
+            "format": "date-time",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "request_id",
+          "endpoint_type",
+          "order_id",
+          "customer_id",
+          "response_delay",
+          "response_code",
+          "post_mode_id",
+          "status_mode_id",
+          "status_step_id",
+          "status_change_after",
+          "unixtimestamp",
+          "payload",
+          "created",
+          "updated"
+        ],
+        "title": "ProcessorRequestResponseSchema",
+        "type": "object"
+      },
+      "ProcessorSettingsResponseSchema": {
+        "description": "Схема ответа настроек эндпоинтов обработки заказов.",
+        "properties": {
+          "endpoint_type": {
+            "$ref": "#/components/schemas/ProcessorEndpointTypesEnum",
+            "description": "Тип эндпоинта, к которому применяется настройка."
+          },
+          "id": {
+            "description": "Идентификатор записи настройки.",
+            "examples": [
+              "1"
+            ],
+            "title": "Id",
+            "type": "integer"
+          },
+          "post_mode_id": {
+            "description": "Идентификатор режима мгновенного ответа отправки.",
+            "title": "Post Mode Id",
+            "type": "integer"
+          },
+          "response_code": {
+            "description": "Настроенный HTTP-код ответа.",
+            "examples": [
+              "200"
+            ],
+            "title": "Response Code",
+            "type": "integer"
+          },
+          "response_delay": {
+            "description": "Настроенная задержка ответа в секундах.",
+            "examples": [
+              "0"
+            ],
+            "title": "Response Delay",
+            "type": "integer"
+          },
+          "status_mode_id": {
+            "description": "Идентификатор режима статусов для переходов.",
+            "title": "Status Mode Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "response_delay",
+          "response_code",
+          "endpoint_type",
+          "status_mode_id",
+          "post_mode_id"
+        ],
+        "title": "ProcessorSettingsResponseSchema",
+        "type": "object"
+      },
+      "ProcessorSettingsUpdateRequestSchema": {
+        "description": "Тело обновления настроек эндпоинтов обработки заказов.",
+        "properties": {
+          "id": {
+            "description": "Идентификатор записи настройки.",
+            "examples": [
+              "1"
+            ],
+            "minimum": 1.0,
+            "title": "Id",
+            "type": "integer"
+          },
+          "post_mode_id": {
+            "description": "Идентификатор режима мгновенного POST-ответа.",
+            "minimum": 1.0,
+            "title": "Post Mode Id",
+            "type": "integer"
+          },
+          "response_code": {
+            "default": 200,
+            "description": "HTTP-код ответа.",
+            "examples": [
+              "200"
+            ],
+            "maximum": 599.0,
+            "minimum": 100.0,
+            "title": "Response Code",
+            "type": "integer"
+          },
+          "response_delay": {
+            "default": 0,
+            "description": "Задержка ответа в секундах.",
+            "examples": [
+              "0"
+            ],
+            "minimum": 0.0,
+            "title": "Response Delay",
+            "type": "integer"
+          },
+          "status_mode_id": {
+            "description": "Идентификатор режима статусов для потока машины состояний.",
+            "minimum": 1.0,
+            "title": "Status Mode Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "status_mode_id",
+          "post_mode_id"
+        ],
+        "title": "ProcessorSettingsUpdateRequestSchema",
+        "type": "object"
+      },
+      "ProcessorStatusModeStepUpdateRequestSchema": {
+        "description": "Тело обновления одного шага статуса в потоке обработки заказов.",
+        "properties": {
+          "duration": {
+            "description": "Длительность статуса в секундах.",
+            "minimum": 1.0,
+            "title": "Duration",
+            "type": "integer"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProcessorValidationErrorSchema"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Опциональное структурированное тело ошибки для этого статуса.",
+            "title": "Error Message"
+          },
+          "id": {
+            "description": "Идентификатор шага статуса.",
+            "examples": [
+              "1"
+            ],
+            "title": "Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "duration"
+        ],
+        "title": "ProcessorStatusModeStepUpdateRequestSchema",
+        "type": "object"
+      },
+      "ProcessorStatusModeStepsNamedResponseSchema": {
+        "description": "Описание шага статуса с именем режима статусов.",
+        "properties": {
+          "duration": {
+            "description": "Длительность статуса в секундах.",
+            "minimum": 1.0,
+            "title": "Duration",
+            "type": "integer"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProcessorValidationErrorSchema"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Опциональное структурированное тело ошибки для этого статуса.",
+            "title": "Error Message"
+          },
+          "id": {
+            "description": "Идентификатор шага статуса.",
+            "title": "Id",
+            "type": "integer"
+          },
+          "status": {
+            "description": "Значение статуса, возвращаемое эндпоинтом статуса.",
+            "title": "Status",
+            "type": "string"
+          },
+          "status_mode_id": {
+            "description": "Идентификатор родительского режима статусов.",
+            "title": "Status Mode Id",
+            "type": "integer"
+          },
+          "status_mode_name": {
+            "description": "Человекочитаемое название режима статусов.",
+            "title": "Status Mode Name",
+            "type": "string"
+          },
+          "step_order": {
+            "description": "Порядок шага статуса в режиме.",
+            "title": "Step Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "status_mode_id",
+          "step_order",
+          "status",
+          "duration",
+          "error_message",
+          "status_mode_name"
+        ],
+        "title": "ProcessorStatusModeStepsNamedResponseSchema",
+        "type": "object"
+      },
+      "ProcessorStatusModeStepsResponseSchema": {
+        "description": "Описание шага статуса.",
+        "properties": {
+          "duration": {
+            "description": "Длительность статуса в секундах.",
+            "minimum": 1.0,
+            "title": "Duration",
+            "type": "integer"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProcessorValidationErrorSchema"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Опциональное структурированное тело ошибки для этого статуса.",
+            "title": "Error Message"
+          },
+          "id": {
+            "description": "Идентификатор шага статуса.",
+            "title": "Id",
+            "type": "integer"
+          },
+          "status": {
+            "description": "Значение статуса, возвращаемое эндпоинтом статуса.",
+            "title": "Status",
+            "type": "string"
+          },
+          "status_mode_id": {
+            "description": "Идентификатор родительского режима статусов.",
+            "title": "Status Mode Id",
+            "type": "integer"
+          },
+          "step_order": {
+            "description": "Порядок шага статуса в режиме.",
+            "title": "Step Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "status_mode_id",
+          "step_order",
+          "status",
+          "duration",
+          "error_message"
+        ],
+        "title": "ProcessorStatusModeStepsResponseSchema",
+        "type": "object"
+      },
+      "ProcessorStatusModesResponseSchema": {
+        "description": "Описание режима статусов.",
+        "properties": {
+          "id": {
+            "description": "Идентификатор режима статусов.",
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Название режима статусов.",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "ProcessorStatusModesResponseSchema",
+        "type": "object"
+      },
+      "ProcessorStatusResponseSchema": {
+        "description": "Схема ответа эндпоинта статуса.",
+        "properties": {
+          "error_message": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Опциональное тело ошибки статуса.",
+            "title": "Error Message"
+          },
+          "order_id": {
+            "description": "Идентификатор заказа из тела отправки.",
+            "title": "Order Id",
+            "type": "string"
+          },
+          "request_id": {
+            "description": "Уникальный идентификатор запроса для опроса статуса.",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "status": {
+            "description": "Текущий статус обработки заказа.",
+            "title": "Status",
+            "type": "string"
+          },
+          "unixtimestamp": {
+            "description": "Unix-время регистрации запроса.",
+            "title": "Unixtimestamp",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "request_id",
+          "order_id",
+          "status",
+          "unixtimestamp"
+        ],
+        "title": "ProcessorStatusResponseSchema",
+        "type": "object"
+      },
+      "ProcessorSubmitRequestSchema": {
+        "additionalProperties": false,
+        "description": "Строгая схема запроса для эндпоинта отправки заказа в обработку.",
+        "properties": {
+          "currency": {
+            "description": "Код валюты по ISO.",
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Идентификатор клиента.",
+            "minLength": 1,
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "items": {
+            "description": "Позиции заказа.",
+            "items": {
+              "$ref": "#/components/schemas/OrderLineItemSchema"
+            },
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "order_id": {
+            "description": "Идентификатор заказа.",
+            "minLength": 1,
+            "title": "Order Id",
+            "type": "string"
+          },
+          "total_amount": {
+            "description": "Общая сумма заказа.",
+            "minimum": 0.0,
+            "title": "Total Amount",
+            "type": "number"
+          }
+        },
+        "required": [
+          "order_id",
+          "customer_id",
+          "items",
+          "total_amount",
+          "currency"
+        ],
+        "title": "ProcessorSubmitRequestSchema",
+        "type": "object"
+      },
+      "ProcessorSubmitResponseSchema": {
+        "description": "Контракт ответа для эндпоинтов отправки заказа и получения статуса.",
+        "properties": {
+          "error_message": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Опциональное тело ошибки статуса.",
+            "title": "Error Message"
+          },
+          "order_id": {
+            "description": "Идентификатор заказа из тела отправки.",
+            "title": "Order Id",
+            "type": "string"
+          },
+          "request_id": {
+            "description": "Уникальный идентификатор запроса для опроса статуса.",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "status": {
+            "description": "Текущий статус обработки заказа.",
+            "title": "Status",
+            "type": "string"
+          },
+          "unixtimestamp": {
+            "description": "Unix-время регистрации запроса.",
+            "title": "Unixtimestamp",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "request_id",
+          "order_id",
+          "status",
+          "unixtimestamp"
+        ],
+        "title": "ProcessorSubmitResponseSchema",
+        "type": "object"
+      },
+      "ProcessorValidationErrorSchema": {
+        "description": "Структурированное тело ошибки валидации статуса.",
+        "properties": {
+          "Annotation": {
+            "examples": [
+              "Эмулированный текст ошибки валидации"
+            ],
+            "title": "Annotation",
+            "type": "string"
+          },
+          "ErrorCode": {
+            "examples": [
+              "INVALID_VALUE"
+            ],
+            "title": "Errorcode",
+            "type": "string"
+          },
+          "Paths": {
+            "examples": [
+              [
+                "some_field"
+              ]
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Paths",
+            "type": "array"
+          },
+          "ProcessorCode": {
+            "examples": [
+              "OP_16"
+            ],
+            "title": "Processorcode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "Paths",
+          "ProcessorCode",
+          "ErrorCode",
+          "Annotation"
+        ],
+        "title": "ProcessorValidationErrorSchema",
+        "type": "object"
+      },
+      "ProductItemSchema": {
+        "description": "Схема элемента данных товара для строгой валидации.",
+        "properties": {
+          "category": {
+            "description": "Категория товара.",
+            "minLength": 1,
+            "title": "Category",
+            "type": "string"
+          },
+          "currency": {
+            "description": "Код валюты по ISO.",
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency",
+            "type": "string"
+          },
+          "name": {
+            "description": "Наименование товара.",
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "price": {
+            "description": "Цена товара.",
+            "minimum": 0.0,
+            "title": "Price",
+            "type": "number"
+          },
+          "product_id": {
+            "description": "Идентификатор товара.",
+            "minLength": 1,
+            "title": "Product Id",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "Доступное количество товара.",
+            "minimum": 0.0,
+            "title": "Quantity",
+            "type": "integer"
+          },
+          "sku": {
+            "description": "SKU товара.",
+            "minLength": 1,
+            "title": "Sku",
+            "type": "string"
+          }
+        },
+        "required": [
+          "product_id",
+          "sku",
+          "name",
+          "category",
+          "price",
+          "currency",
+          "quantity"
+        ],
+        "title": "ProductItemSchema",
+        "type": "object"
+      },
+      "ProductsGetResponseSchema": {
+        "description": "Схема ответа эндпоинта чтения товаров.",
+        "properties": {
+          "items": {
+            "description": "Накопленные данные товаров.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ProductsGetResponseSchema",
+        "type": "object"
+      },
+      "ProductsSetOpenRequestSchema": {
+        "description": "Тело запроса свободного формата для эндпоинта записи товаров (произвольные объекты).",
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "minItems": 1,
+        "title": "ProductsSetOpenRequestSchema",
+        "type": "array"
+      },
+      "ProductsSetRequestSchema": {
+        "description": "Строгое тело запроса для эндпоинта записи товаров.",
+        "items": {
+          "$ref": "#/components/schemas/ProductItemSchema"
+        },
+        "minItems": 1,
+        "title": "ProductsSetRequestSchema",
+        "type": "array"
+      },
+      "ProxyEndpointTypesEnum": {
+        "description": "Типы endpoint settings для proxy API.",
+        "enum": [
+          "capture"
+        ],
+        "title": "ProxyEndpointTypesEnum",
+        "type": "string"
+      },
+      "ProxyRequestResponseSchema": {
+        "description": "Данные сохраненного запроса загрузки товара.",
+        "properties": {
+          "body": {
+            "additionalProperties": true,
+            "description": "Сохраненное тело запроса в формате JSON.",
+            "title": "Body",
+            "type": "object"
+          },
+          "created": {
+            "description": "Время создания записи.",
+            "format": "date-time",
+            "title": "Created",
+            "type": "string"
+          },
+          "headers": {
+            "additionalProperties": true,
+            "description": "Заголовки, сохраненные из входящего запроса.",
+            "title": "Headers",
+            "type": "object"
+          },
+          "query_params": {
+            "additionalProperties": true,
+            "description": "Параметры запроса, сохраненные из входящего запроса.",
+            "title": "Query Params",
+            "type": "object"
+          },
+          "request_id": {
+            "description": "Уникальный идентификатор запроса для обновления или вставки записи.",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "updated": {
+            "description": "Время обновления записи.",
+            "format": "date-time",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "required": [
+          "request_id",
+          "query_params",
+          "headers",
+          "body",
+          "created",
+          "updated"
+        ],
+        "title": "ProxyRequestResponseSchema",
+        "type": "object"
+      },
+      "ProxySettingsResponseSchema": {
+        "description": "Схема ответа настроек загрузки товаров.",
+        "properties": {
+          "endpoint_type": {
+            "$ref": "#/components/schemas/ProxyEndpointTypesEnum",
+            "description": "Тип эндпоинта для настроек эмуляции ответа загрузки товаров."
+          },
+          "id": {
+            "description": "Идентификатор записи настройки.",
+            "examples": [
+              "1"
+            ],
+            "title": "Id",
+            "type": "integer"
+          },
+          "response_code": {
+            "description": "Настроенный HTTP-код ответа.",
+            "examples": [
+              "200"
+            ],
+            "title": "Response Code",
+            "type": "integer"
+          },
+          "response_delay": {
+            "description": "Настроенная задержка ответа в секундах.",
+            "examples": [
+              "0"
+            ],
+            "title": "Response Delay",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "response_delay",
+          "response_code",
+          "endpoint_type"
+        ],
+        "title": "ProxySettingsResponseSchema",
+        "type": "object"
+      },
+      "SetterClearResponseSchema": {
+        "description": "Унифицированная схема ответа для эндпоинтов очистки.",
+        "properties": {
+          "deleted_count": {
+            "description": "Количество удаленных записей.",
+            "minimum": 0.0,
+            "title": "Deleted Count",
+            "type": "integer"
+          },
+          "info": {
+            "description": "Описание результата.",
+            "title": "Info",
+            "type": "string"
+          }
+        },
+        "required": [
+          "info",
+          "deleted_count"
+        ],
+        "title": "SetterClearResponseSchema",
+        "type": "object"
+      },
+      "SetterDataResponseSchema": {
+        "description": "Схема отладочного ответа для сохраненных записей витрины.",
+        "properties": {
+          "created": {
+            "description": "Время создания записи.",
+            "format": "date-time",
+            "title": "Created",
+            "type": "string"
+          },
+          "entity_type": {
+            "description": "Тип сущности витрины.",
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "id": {
+            "description": "Идентификатор записи.",
+            "minimum": 1.0,
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_validated": {
+            "description": "Признак, что данные записаны через строгий эндпоинт записи.",
+            "title": "Is Validated",
+            "type": "boolean"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "description": "Сохраненное тело данных.",
+            "title": "Payload",
+            "type": "object"
+          },
+          "updated": {
+            "description": "Время обновления записи.",
+            "format": "date-time",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "entity_type",
+          "payload",
+          "is_validated",
+          "created",
+          "updated"
+        ],
+        "title": "SetterDataResponseSchema",
+        "type": "object"
+      },
+      "SetterEndpointTypesEnum": {
+        "description": "Типы endpoint settings для setter API.",
+        "enum": [
+          "get_products"
+        ],
+        "title": "SetterEndpointTypesEnum",
+        "type": "string"
+      },
+      "SetterSettingsResponseSchema": {
+        "description": "Схема ответа настроек эндпоинтов витрины.",
+        "properties": {
+          "endpoint_type": {
+            "$ref": "#/components/schemas/SetterEndpointTypesEnum",
+            "description": "Тип эндпоинта, к которому применяются настройки."
+          },
+          "id": {
+            "description": "Идентификатор записи настройки.",
+            "examples": [
+              "1"
+            ],
+            "title": "Id",
+            "type": "integer"
+          },
+          "response_code": {
+            "description": "Настроенный HTTP-код ответа.",
+            "examples": [
+              "200"
+            ],
+            "title": "Response Code",
+            "type": "integer"
+          },
+          "response_delay": {
+            "description": "Настроенная задержка ответа в секундах.",
+            "examples": [
+              "0"
+            ],
+            "title": "Response Delay",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "response_delay",
+          "response_code",
+          "endpoint_type"
+        ],
+        "title": "SetterSettingsResponseSchema",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "\nОткрытый mock API для интеграционного и workflow-тестирования.\n\n## API витрины\nПубличное ядро сохраняет и возвращает накопленные данные для\n`products`.\n\n## Машина состояний обработки заказов\nЭндпоинты обработки заказов эмулируют асинхронный жизненный цикл\nисполнения заказа с настраиваемыми задержками ответа, кодами ответа,\nмгновенными ошибками отправки и переходами статусов по времени.\n\n## Захват загрузки товаров\nЭндпоинты загрузки товаров сохраняют входящий payload и метаданные запроса\nпо `request_id` для детерминированных интеграционных сценариев.\n\n## Настройки\nЭндпоинты `/settings/*` позволяют настраивать поведение ответов и режимы\nмашины состояний для воспроизводимых тестовых сценариев.\n",
+    "title": "mock_api",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/healthcheck": {
+      "get": {
+        "description": "Ручка хелсчека.",
+        "operationId": "healthcheck_healthcheck_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ручка хелсчека.",
+        "tags": [
+          "Проверка здоровья"
+        ]
+      }
+    },
+    "/processor/api/v1/order": {
+      "post": {
+        "description": "Зарегистрировать новый запрос обработки заказа.",
+        "operationId": "submit_order_processor_api_v1_order_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessorSubmitRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessorSubmitResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Отправить заказ в машину состояний обработки.",
+        "tags": [
+          "Processor API. Эмулирует асинхронную обработку и статусы"
+        ]
+      }
+    },
+    "/processor/api/v1/requests": {
+      "get": {
+        "description": "Вернуть сохраненные запросы обработки от новых к старым.",
+        "operationId": "get_requests_processor_api_v1_requests_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessorRequestResponseSchema"
+                  },
+                  "title": "Response Get Requests Processor Api V1 Requests Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить сохраненные requests обработки заказов.",
+        "tags": [
+          "Processor API. Эмулирует асинхронную обработку и статусы"
+        ]
+      }
+    },
+    "/processor/api/v1/status": {
+      "get": {
+        "description": "Получить текущий статус обработки заказа.",
+        "operationId": "get_order_status_processor_api_v1_status_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "title": "Request Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessorStatusResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Получить статус обработки заказа по идентификатору запроса.",
+        "tags": [
+          "Processor API. Эмулирует асинхронную обработку и статусы"
+        ]
+      }
+    },
+    "/processor/settings": {
+      "get": {
+        "description": "Вернуть список настроек processor API.",
+        "operationId": "get_settings_processor_settings_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessorSettingsResponseSchema"
+                  },
+                  "title": "Response Get Settings Processor Settings Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить настройки processor-эндпоинтов.",
+        "tags": [
+          "Processor Settings. Настройка статус-кодов, задержек и статусов обработки"
+        ]
+      },
+      "put": {
+        "description": "Обновить одну настройку уровня processor endpoint.",
+        "operationId": "update_processor_setting_processor_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessorSettingsUpdateRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessorSettingsResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Обновить настройку processor-эндпоинта.",
+        "tags": [
+          "Processor Settings. Настройка статус-кодов, задержек и статусов обработки"
+        ]
+      }
+    },
+    "/processor/settings/post-modes": {
+      "get": {
+        "description": "Вернуть все post-modes для processor submit.",
+        "operationId": "get_post_modes_processor_settings_post_modes_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessorPostModesResponseSchema"
+                  },
+                  "title": "Response Get Post Modes Processor Settings Post Modes Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить processor post-modes.",
+        "tags": [
+          "Processor Settings. Настройка статус-кодов, задержек и статусов обработки"
+        ]
+      }
+    },
+    "/processor/settings/status-mode-steps": {
+      "get": {
+        "description": "Вернуть все шаги статусов для всех режимов.",
+        "operationId": "get_status_mode_steps_processor_settings_status_mode_steps_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessorStatusModeStepsNamedResponseSchema"
+                  },
+                  "title": "Response Get Status Mode Steps Processor Settings Status Mode Steps Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить processor status-mode-steps.",
+        "tags": [
+          "Processor Settings. Настройка статус-кодов, задержек и статусов обработки"
+        ]
+      },
+      "put": {
+        "description": "Обновить конфигурацию одного шага статуса по id.",
+        "operationId": "update_status_mode_steps_processor_settings_status_mode_steps_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessorStatusModeStepUpdateRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessorStatusModeStepsResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Обновить processor status-mode-step.",
+        "tags": [
+          "Processor Settings. Настройка статус-кодов, задержек и статусов обработки"
+        ]
+      }
+    },
+    "/processor/settings/status-modes": {
+      "get": {
+        "description": "Вернуть все режимы переходов статусов.",
+        "operationId": "get_status_modes_processor_settings_status_modes_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessorStatusModesResponseSchema"
+                  },
+                  "title": "Response Get Status Modes Processor Settings Status Modes Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить processor status-modes.",
+        "tags": [
+          "Processor Settings. Настройка статус-кодов, задержек и статусов обработки"
+        ]
+      }
+    },
+    "/proxy/api/v1/pay": {
+      "post": {
+        "description": "Сохранить метаданные запроса и payload по request_id.",
+        "operationId": "capture_proxy_proxy_api_v1_pay_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "title": "Request Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "title": "Payload",
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyRequestResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Перехватить информацию входящего запроса на платеж.",
+        "tags": [
+          "Proxy API. Захватывает запрос и хранит метаданные вызова"
+        ]
+      }
+    },
+    "/proxy/api/v1/requests": {
+      "delete": {
+        "description": "Удалить все сохраненные proxy requests.",
+        "operationId": "clear_requests_proxy_api_v1_requests_delete",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetterClearResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Полностью очистить proxy requests.",
+        "tags": [
+          "Proxy API. Захватывает запрос и хранит метаданные вызова"
+        ]
+      },
+      "get": {
+        "description": "Вернуть сохраненные запросы в порядке от новых к старым.",
+        "operationId": "get_requests_proxy_api_v1_requests_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProxyRequestResponseSchema"
+                  },
+                  "title": "Response Get Requests Proxy Api V1 Requests Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить сохраненные proxy-запросы.",
+        "tags": [
+          "Proxy API. Захватывает запрос и хранит метаданные вызова"
+        ]
+      }
+    },
+    "/proxy/api/v1/requests/{request_id}": {
+      "get": {
+        "description": "Вернуть одну сохраненную запись по request_id.",
+        "operationId": "get_proxy_record_proxy_api_v1_requests__request_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "title": "Request Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyRequestResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Получить proxy-запрос по request_id.",
+        "tags": [
+          "Proxy API. Захватывает запрос и хранит метаданные вызова"
+        ]
+      }
+    },
+    "/proxy/settings": {
+      "get": {
+        "description": "Вернуть список настроек proxy capture endpoint.",
+        "operationId": "get_settings_proxy_settings_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProxySettingsResponseSchema"
+                  },
+                  "title": "Response Get Settings Proxy Settings Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить настройки proxy-эндпоинта.",
+        "tags": [
+          "Proxy Settings. Настройка статус-кодов и задержек"
+        ]
+      },
+      "put": {
+        "description": "Обновить настройку proxy capture endpoint по id.",
+        "operationId": "update_proxy_setting_proxy_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseSettingsUpdateRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxySettingsResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Обновить настройку proxy-эндпоинта.",
+        "tags": [
+          "Proxy Settings. Настройка статус-кодов и задержек"
+        ]
+      }
+    },
+    "/setter/api/v1/clear": {
+      "delete": {
+        "description": "Полностью удалить все записи данных для всех сущностей витрины.",
+        "operationId": "clear_all_setter_api_v1_clear_delete",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetterClearResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Полностью очистить все записи данных витрины.",
+        "tags": [
+          "Setter API. Наполняет данные витрины для pull-интеграций"
+        ]
+      }
+    },
+    "/setter/api/v1/products": {
+      "delete": {
+        "description": "Полностью удалить записи данных товаров.",
+        "operationId": "clear_products_setter_api_v1_products_delete",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetterClearResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Полностью очистить записи данных товаров.",
+        "tags": [
+          "Setter API. Наполняет данные витрины для pull-интеграций"
+        ]
+      },
+      "get": {
+        "description": "Вернуть все накопленные записи данных товаров.",
+        "operationId": "get_products_setter_api_v1_products_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsGetResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить накопленные записи данных товаров.",
+        "tags": [
+          "Setter API. Наполняет данные витрины для pull-интеграций"
+        ]
+      }
+    },
+    "/setter/api/v1/products/set": {
+      "post": {
+        "description": "Сохранить данные товаров со строгой валидацией схемы.",
+        "operationId": "set_products_setter_api_v1_products_set_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductsSetRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Сохранить валидированные данные товаров.",
+        "tags": [
+          "Setter API. Наполняет данные витрины для pull-интеграций"
+        ]
+      }
+    },
+    "/setter/api/v1/products/set-open": {
+      "post": {
+        "description": "Сохранить данные товаров с валидацией по свободной схеме.",
+        "operationId": "set_products_open_setter_api_v1_products_set_open_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductsSetOpenRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Сохранить данные товаров по свободной схеме.",
+        "tags": [
+          "Setter API. Наполняет данные витрины для pull-интеграций"
+        ]
+      }
+    },
+    "/setter/api/v1/requests": {
+      "get": {
+        "description": "Вернуть сохраненные setter requests для отладки.",
+        "operationId": "get_setter_data_setter_api_v1_requests_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SetterDataResponseSchema"
+                  },
+                  "title": "Response Get Setter Data Setter Api V1 Requests Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить сохраненные setter-запросы.",
+        "tags": [
+          "Setter API. Наполняет данные витрины для pull-интеграций"
+        ]
+      }
+    },
+    "/setter/settings": {
+      "get": {
+        "description": "Получить настройки соединения setter API.",
+        "operationId": "get_settings_setter_settings_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SetterSettingsResponseSchema"
+                  },
+                  "title": "Response Get Settings Setter Settings Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Получить настройки setter-эндпоинтов.",
+        "tags": [
+          "Setter Settings. Настройка статус-кодов и задержек"
+        ]
+      },
+      "put": {
+        "description": "Обновить настройку соединения setter API по id.",
+        "operationId": "update_setter_setting_setter_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseSettingsUpdateRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetterSettingsResponseSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Обновить настройку setter-эндпоинта.",
+        "tags": [
+          "Setter Settings. Настройка статус-кодов и задержек"
+        ]
+      }
+    }
+  }
+}
